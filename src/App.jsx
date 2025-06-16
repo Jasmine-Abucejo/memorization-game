@@ -80,6 +80,7 @@ function App() {
   const allClicked = Object.values(numberClicked).every((val) => val === true);
   const allInput = Object.values(inputNumber).every((val) => val != "");
   const submitAnswer = () => {
+    stopTimer();
     if (allInput) {
       console.log(allInput);
       const isSame = isEqual(inputNumber, randomNumber);
@@ -106,245 +107,297 @@ function App() {
     // Check if all values for each key are equal
     return keys1.every((key) => obj1[key] === obj2[key]);
   };
+  const timeRef = useRef(0);
 
+  const [time, setTime] = useState({ hour: 0, min: 0, sec: 0 });
+  const startTimer = () => {
+    setStart(false);
+    timeRef.current = setInterval(() => {
+      setTime(({ hour, min, sec }) => {
+        sec += 1;
+        if (sec === 60) {
+          sec = 0;
+          min += 1;
+        }
+        if (min === 60) {
+          min = 0;
+          hour += 1;
+        }
+        return { hour, min, sec };
+      });
+    }, 1000);
+  };
+  const stopTimer = () => {
+    clearInterval(timeRef.current);
+  };
+  const resetTimer = () => {
+    setTime({ hour: 0, min: 0, sec: 0 });
+  };
   return (
     <div className=" justify-center items-center">
       <div
         className={`${
           start
-            ? "z-50 absolute top-20 right-50 border-2 h-1/2 w-2/3 text-center p-4 bg-blue-400"
+            ? "z-50 absolute top-20 right-50 border-2 min-h-1/2 w-2/3 text-center  p-4 bg-blue-400"
             : "hidden"
         }`}
       >
-        <p>Welcome</p>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-        <p>4</p>
+        <div className="m-4">
+          <p className="text-4xl ">Welcome to Numemo Game!</p>
+        </div>
+
+        <span className="font-bold text-red-500">Instructions: </span>
+        <span>
+          Each box contains a random number. The goal of the game is for you to
+          memorize what number is inside each box. Click on the boxes, one by
+          one, two by two, from top to bottom, from left to right, however you
+          want; to show the hidden numbers. But{" "}
+          <span className="font-bold ">take note: </span>
+          The numbers will disappear after{" "}
+          <span className="text-red-500 font-bold">3 </span>seconds and the box
+          you've already opened cannot be opened again.
+        </span>
+        <p>
+          After opening all the boxes, a form will appear where you will submit
+          your answer
+        </p>
+        <p>
+          Your timer starts once you click the{" "}
+          <span className=" font-bold">Start</span> button
+        </p>
+        <p>Best of Luck</p>
         <button
           onClick={() => {
-            setStart(false);
+            startTimer();
           }}
           className="border-2 p-2 bg-green-500"
         >
           Start
         </button>
       </div>
+
       <div
         className={`${
-          start
-            ? "opacity-25 pointer-events-none grid grid-cols-5 grid-flow-rows justify-center items-center p-8 gap-4"
-            : "opacity-100 grid grid-cols-5 grid-flow-rows justify-center items-center p-8 gap-4"
+          start ? "opacity-25 pointer-events-none " : "opacity-100 "
         }`}
       >
-        <Card
-          id={1}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={2}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={3}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={4}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={5}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={6}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={7}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={8}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={9}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <Card
-          id={10}
-          clicked={clicked}
-          spanVisible={spanVisible}
-          randomNumber={randomNumber}
-        />
-        <div
-          className={`${
-            allClicked ? "flex col-span-5" : "hidden"
-          } m-4 border-2 flex-col gap-3 justify-center items-center p-4`}
-        >
-          <p>Correctly input the corresponding numbers for each box</p>
-          <div className="grid grid-cols-5 grid-flow-row gap-4">
-            <label className="flex flex-row">
-              Box #1:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[1]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [1]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #2:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[2]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [2]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #3:
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[3]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [3]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #4:
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[4]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [4]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #5:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[5]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [5]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #6:
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[6]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [6]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-
-            <label htmlFor="" className="flex flex-row">
-              Box #7:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[7]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [7]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-            <label htmlFor="" className="flex flex-row">
-              Box #8:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[8]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [8]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-            <label htmlFor="" className="flex flex-row">
-              Box #9:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[9]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [9]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-            <label htmlFor="" className="flex flex-row">
-              Box #10:{" "}
-              <input
-                type="number"
-                name=""
-                id=""
-                value={inputNumber[10]}
-                onChange={(e) =>
-                  setInputNumber({ ...inputNumber, [10]: e.target.value })
-                }
-                className="border-2 w-1/2"
-              />
-            </label>
-            <button onClick={() => submitAnswer()}>Submit</button>
-          </div>
+        <div>
+          <span className="font-extrabold text-4xl">Time: </span>
+          <span>
+            {String(time.hour).padStart(2, "0")}:
+            {String(time.min).padStart(2, "0")}:
+            {String(time.sec).padStart(2, "0")}
+          </span>
         </div>
-        <Toaster />
-        {/* <div className="border-2" id="1" onClick={(e) => clicked(e)}>
+        <div className="grid grid-cols-5 grid-flow-rows justify-center items-center p-8 gap-4">
+          <Card
+            id={1}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={2}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={3}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={4}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={5}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={6}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={7}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={8}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={9}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <Card
+            id={10}
+            clicked={clicked}
+            spanVisible={spanVisible}
+            randomNumber={randomNumber}
+          />
+          <div
+            className={`${
+              allClicked ? "flex col-span-5" : "hidden"
+            } m-4 border-2 flex-col gap-3 justify-center items-center p-4`}
+          >
+            <p>Correctly input the corresponding numbers for each box</p>
+            <div className="grid grid-cols-5 grid-flow-row gap-4">
+              <label className="flex flex-row">
+                Box #1:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[1]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [1]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #2:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[2]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [2]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #3:
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[3]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [3]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #4:
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[4]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [4]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #5:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[5]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [5]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #6:
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[6]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [6]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+
+              <label htmlFor="" className="flex flex-row">
+                Box #7:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[7]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [7]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+              <label htmlFor="" className="flex flex-row">
+                Box #8:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[8]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [8]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+              <label htmlFor="" className="flex flex-row">
+                Box #9:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[9]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [9]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+              <label htmlFor="" className="flex flex-row">
+                Box #10:{" "}
+                <input
+                  type="number"
+                  name=""
+                  id=""
+                  value={inputNumber[10]}
+                  onChange={(e) =>
+                    setInputNumber({ ...inputNumber, [10]: e.target.value })
+                  }
+                  className="border-2 w-1/2"
+                />
+              </label>
+              <button onClick={() => submitAnswer()}>Submit</button>
+            </div>
+          </div>
+          <Toaster />
+          {/* <div className="border-2" id="1" onClick={(e) => clicked(e)}>
         <span
           className={
             !spanVisible[1]
@@ -524,6 +577,7 @@ function App() {
           {randomNumber[10]}
         </span>
       </div> */}
+        </div>
       </div>
     </div>
   );
