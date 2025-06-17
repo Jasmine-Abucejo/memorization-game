@@ -51,7 +51,11 @@ function App() {
     10: "",
   });
   const [start, setStart] = useState(true);
+  const timeRef = useRef(0);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const [time, setTime] = useState({ hour: 0, min: 0, sec: 0 });
   const clicked = (e) => {
     let id = parseInt(e.currentTarget.id);
     if (!numberClicked[id]) {
@@ -81,12 +85,15 @@ function App() {
   const allInput = Object.values(inputNumber).every((val) => val != "");
   const submitAnswer = () => {
     stopTimer();
+    setIsSubmitted(true);
     if (allInput) {
       console.log(allInput);
+      console.log(inputNumber, randomNumber);
       const isSame = isEqual(inputNumber, randomNumber);
 
       if (isSame) {
         toast("Congratulations");
+        setIsCorrect(true);
         // console.log("Both objects have the same values for all keys.");
       } else {
         toast("Wrong Answer");
@@ -107,9 +114,7 @@ function App() {
     // Check if all values for each key are equal
     return keys1.every((key) => obj1[key] === obj2[key]);
   };
-  const timeRef = useRef(0);
 
-  const [time, setTime] = useState({ hour: 0, min: 0, sec: 0 });
   const startTimer = () => {
     setStart(false);
     timeRef.current = setInterval(() => {
@@ -134,11 +139,68 @@ function App() {
     setTime({ hour: 0, min: 0, sec: 0 });
   };
   return (
-    <div className=" justify-center items-center">
+    <div className="justify-center items-center">
+      <div
+        className={`${
+          isSubmitted
+            ? "z-50 absolute  top-20 right-20 lg:right-50 border-2 min-h-1/2 w-2/3 text-center  p-4"
+            : "hidden"
+        } ${isCorrect ? "bg-green-500" : "bg-red-500"}`}
+      >
+        {isCorrect && (
+          <div className="flex flex-col gap-4">
+            <p className="text-4xl font-bold">Congratulations!!! 🎉🏆🙌</p>
+            <p className="text-xl font-bold">You are so great ( ◡̀_◡́)ᕤ</p>
+            <p>
+              Your time is{" "}
+              <span className="font-bold">
+                {String(time.hour).padStart(2, "0")}:
+                {String(time.min).padStart(2, "0")}:
+                {String(time.sec).padStart(2, "0")}
+              </span>
+            </p>
+            <p>
+              <button className="p-4 border-2 rounded-2xl bg-yellow-300">
+                New Game
+              </button>
+            </p>
+          </div>
+        )}
+        {!isCorrect && (
+          <div className="flex flex-col gap-4">
+            <p className="text-4xl font-bold">
+              Your current answer is wrong 😔
+            </p>
+            <p className="text-xl font-bold">
+              But hey, you can try again ( ´･･)ﾉ(._.`)
+            </p>
+            <p>
+              Do you wish to submit new answer for this set or you want to start
+              a new game?
+            </p>
+            <p>
+              Your current time is{" "}
+              <span className="font-bold">
+                {String(time.hour).padStart(2, "0")}:
+                {String(time.min).padStart(2, "0")}:
+                {String(time.sec).padStart(2, "0")}
+              </span>
+            </p>
+            <p className="flex gap-32">
+              <button className="p-4 border-2 rounded-2xl  bg-green-500 flex-1">
+                Try Again
+              </button>
+              <button className="p-4 border-2 rounded-2xl bg-yellow-300 flex-1">
+                New Game
+              </button>
+            </p>
+          </div>
+        )}
+      </div>
       <div
         className={`${
           start
-            ? "z-50 absolute top-20 right-50 border-2 min-h-1/2 w-2/3 text-center  p-4 bg-blue-400"
+            ? "z-50 absolute top-20 right-20 lg:right-50 border-2 min-h-1/2 w-2/3 text-center  p-4 bg-blue-400"
             : "hidden"
         }`}
       >
@@ -178,7 +240,9 @@ function App() {
 
       <div
         className={`${
-          start ? "opacity-25 pointer-events-none " : "opacity-100 "
+          start || isSubmitted
+            ? "opacity-25 pointer-events-none "
+            : "opacity-100 "
         }`}
       >
         <div>
@@ -265,7 +329,10 @@ function App() {
                   id=""
                   value={inputNumber[1]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [1]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [1]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -279,7 +346,10 @@ function App() {
                   id=""
                   value={inputNumber[2]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [2]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [2]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -293,7 +363,10 @@ function App() {
                   id=""
                   value={inputNumber[3]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [3]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [3]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -307,7 +380,10 @@ function App() {
                   id=""
                   value={inputNumber[4]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [4]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [4]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -321,7 +397,10 @@ function App() {
                   id=""
                   value={inputNumber[5]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [5]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [5]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -335,7 +414,10 @@ function App() {
                   id=""
                   value={inputNumber[6]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [6]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [6]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -349,7 +431,10 @@ function App() {
                   id=""
                   value={inputNumber[7]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [7]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [7]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -362,7 +447,10 @@ function App() {
                   id=""
                   value={inputNumber[8]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [8]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [8]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -375,7 +463,10 @@ function App() {
                   id=""
                   value={inputNumber[9]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [9]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [9]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
@@ -388,7 +479,10 @@ function App() {
                   id=""
                   value={inputNumber[10]}
                   onChange={(e) =>
-                    setInputNumber({ ...inputNumber, [10]: e.target.value })
+                    setInputNumber({
+                      ...inputNumber,
+                      [10]: Number(e.target.value),
+                    })
                   }
                   className="border-2 w-1/2"
                 />
