@@ -138,6 +138,8 @@ function App() {
   const resetTimer = () => {
     setTime({ hour: 0, min: 0, sec: 0 });
   };
+
+  const colors = ["bg-amber-500", "bg-pink-400", "bg-blue-500", "bg-green-200"];
   return (
     <div className="justify-center items-center">
       <div
@@ -254,74 +256,44 @@ function App() {
           </span>
         </div>
         <div className="grid grid-cols-5 grid-flow-rows justify-center items-center p-8 gap-4">
-          <Card
-            id={1}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={2}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={3}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={4}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={5}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={6}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={7}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={8}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={9}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
-          <Card
-            id={10}
-            clicked={clicked}
-            spanVisible={spanVisible}
-            randomNumber={randomNumber}
-          />
+          {Object.entries(spanVisible).map(([key, value], index) => (
+            <Card
+              key={key}
+              id={key}
+              clicked={clicked}
+              spanVisible={spanVisible}
+              randomNumber={randomNumber}
+              bgColor={colors[index % colors.length]}
+            />
+          ))}
           <div
             className={`${
               allClicked ? "flex col-span-5" : "hidden"
-            } m-4 border-2 flex-col gap-3 justify-center items-center p-4`}
+            } m-4 border-2 flex-col gap-3 justify-center items-center p-4 bg-gray-300`}
           >
             <p>Correctly input the corresponding numbers for each box</p>
-            <div className="grid grid-cols-5 grid-flow-row gap-4">
-              <label className="flex flex-row">
+            <div className="grid grid-cols-3 grid-flow-row gap-4 lg:grid-cols-5 ">
+              {/* {Object.entries(spanVisible).map(([key, value], index) => (
+                <label className="flex flex-row lg:gap-3">
+                  Box #{key}:{" "}
+                  <input
+                    type="number"
+                    name=""
+                    id=""
+                    value={inputNumber[Number({ key })]}
+                    onChange={(e) =>
+                      setInputNumber({
+                        ...inputNumber,
+                        [Number({ key })]: Number(e.target.value),
+                      })
+                    }
+                    className={`border-2 w-1/2 ${
+                      colors[index % colors.length]
+                    }`}
+                  />
+                </label>
+              ))} */}
+              <label className="flex flex-row lg:gap-3">
                 Box #1:{" "}
                 <input
                   type="number"
@@ -334,11 +306,11 @@ function App() {
                       [1]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-amber-500"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #2:{" "}
                 <input
                   type="number"
@@ -351,11 +323,11 @@ function App() {
                       [2]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-pink-400"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #3:
                 <input
                   type="number"
@@ -368,11 +340,11 @@ function App() {
                       [3]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-blue-500"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #4:
                 <input
                   type="number"
@@ -385,11 +357,11 @@ function App() {
                       [4]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-green-200"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #5:{" "}
                 <input
                   type="number"
@@ -402,11 +374,11 @@ function App() {
                       [5]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-amber-500"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #6:
                 <input
                   type="number"
@@ -419,11 +391,11 @@ function App() {
                       [6]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-pink-400"
                 />
               </label>
 
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #7:{" "}
                 <input
                   type="number"
@@ -436,10 +408,10 @@ function App() {
                       [7]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-blue-500"
                 />
               </label>
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #8:{" "}
                 <input
                   type="number"
@@ -452,10 +424,10 @@ function App() {
                       [8]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-green-200"
                 />
               </label>
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-3">
                 Box #9:{" "}
                 <input
                   type="number"
@@ -468,10 +440,10 @@ function App() {
                       [9]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-amber-500"
                 />
               </label>
-              <label htmlFor="" className="flex flex-row">
+              <label htmlFor="" className="flex flex-row lg:gap-1">
                 Box #10:{" "}
                 <input
                   type="number"
@@ -484,193 +456,18 @@ function App() {
                       [10]: Number(e.target.value),
                     })
                   }
-                  className="border-2 w-1/2"
+                  className="border-2 w-1/2 bg-pink-400"
                 />
               </label>
-              <button onClick={() => submitAnswer()}>Submit</button>
+              <button
+                onClick={() => submitAnswer()}
+                className="border-2 bg-lime-400 rounded-2xl p-2 lg:w-1/2 col-span-2 lg:col-span-1 "
+              >
+                Submit
+              </button>
             </div>
           </div>
           <Toaster />
-          {/* <div className="border-2" id="1" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[1]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #1
-        </span>
-        <span
-          className={
-            spanVisible[1] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[1]}
-        </span>
-      </div>
-      <div className="border-2" id="2" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[2]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #2
-        </span>
-        <span
-          className={
-            spanVisible[2] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[2]}
-        </span>
-      </div>
-      <div className="border-2" id="3" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[3]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #3
-        </span>
-        <span
-          className={
-            spanVisible[3] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[3]}
-        </span>
-      </div>
-      <div className="border-2" id="4" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[4]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #4
-        </span>
-        <span
-          className={
-            spanVisible[4] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[4]}
-        </span>
-      </div>
-      <div className="border-2" id="5" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[5]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #5
-        </span>
-        <span
-          className={
-            spanVisible[5] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[5]}
-        </span>
-      </div>
-      <div className="border-2" id="6" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[6]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #6
-        </span>
-        <span
-          className={
-            spanVisible[6] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[6]}
-        </span>
-      </div>
-      <div className="border-2" id="7" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[7]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #7
-        </span>
-        <span
-          className={
-            spanVisible[7] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[7]}
-        </span>
-      </div>
-      <div className="border-2" id="8" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[8]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #8
-        </span>
-        <span
-          className={
-            spanVisible[8] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[8]}
-        </span>
-      </div>
-      <div className="border-2" id="9" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[9]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #9
-        </span>
-        <span
-          className={
-            spanVisible[9] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[9]}
-        </span>
-      </div>
-      <div className="border-2" id="10" onClick={(e) => clicked(e)}>
-        <span
-          className={
-            !spanVisible[10]
-              ? "inline text-black font-bold cursor-default"
-              : "hidden"
-          }
-        >
-          Box #10
-        </span>
-        <span
-          className={
-            spanVisible[10] ? "inline text-green-400 font-extrabold" : "hidden"
-          }
-        >
-          {randomNumber[10]}
-        </span>
-      </div> */}
         </div>
       </div>
     </div>

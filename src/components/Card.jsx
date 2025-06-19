@@ -1,7 +1,7 @@
-const Card = ({ id, clicked, spanVisible, randomNumber }) => {
+const Card = ({ id, clicked, spanVisible, randomNumber, bgColor }) => {
   return (
     <div
-      className="border-2 text-center p-4"
+      className={`border-2 text-center p-4 ${bgColor}`}
       id={id}
       onClick={(e) => clicked(e)}
     >
@@ -16,7 +16,9 @@ const Card = ({ id, clicked, spanVisible, randomNumber }) => {
       </span>
       <span
         className={
-          spanVisible[id] ? "inline text-green-400 font-extrabold" : "hidden"
+          spanVisible[id]
+            ? "inline text-shadow-black text-green-500 text-shadow-2xs font-extrabold text-xl"
+            : "hidden"
         }
       >
         {randomNumber[id]}
