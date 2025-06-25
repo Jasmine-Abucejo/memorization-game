@@ -50,7 +50,8 @@ function App() {
     9: "",
     10: "",
   });
-  const [start, setStart] = useState(true);
+  const [intro, setIntro] = useState(false);
+  const [start, setStart] = useState(false);
   const timeRef = useRef(0);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -83,12 +84,20 @@ function App() {
   };
   const allClicked = Object.values(numberClicked).every((val) => val === true);
   const allInput = Object.values(inputNumber).every((val) => val != "");
+  const setAll = (obj, value) => {
+    return Object.keys(obj).reduce((acc, key) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+  };
+
   const submitAnswer = () => {
-    stopTimer();
+    pauseTimer();
     setIsSubmitted(true);
+    setStart(false);
     if (allInput) {
-      console.log(allInput);
-      console.log(inputNumber, randomNumber);
+      // console.log(allInput);
+      // console.log(inputNumber, randomNumber);
       const isSame = isEqual(inputNumber, randomNumber);
 
       if (isSame) {
@@ -108,15 +117,16 @@ function App() {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
 
-    // Check if they have the same keys
     if (keys1.length !== keys2.length) return false;
 
-    // Check if all values for each key are equal
     return keys1.every((key) => obj1[key] === obj2[key]);
   };
-
+  const closeIntro = () => {
+    setIntro(true);
+    startTimer();
+  };
   const startTimer = () => {
-    setStart(false);
+    setStart(true);
     timeRef.current = setInterval(() => {
       setTime(({ hour, min, sec }) => {
         sec += 1;
@@ -132,16 +142,34 @@ function App() {
       });
     }, 1000);
   };
-  const stopTimer = () => {
-    clearInterval(timeRef.current);
+  const pauseTimer = () => {
+    if (timeRef.current) {
+      clearInterval(timeRef.current);
+      timeRef.current = null;
+      setStart(false);
+    }
   };
+
   const resetTimer = () => {
     setTime({ hour: 0, min: 0, sec: 0 });
   };
+  const tryAgain = () => {
+    setIsSubmitted(false);
+    startTimer();
+  };
+  const newGame = () => {
+    resetTimer();
+    setIsSubmitted(false);
+    setNumberClicked((prev) => setAll(prev, false));
+    setInputNumber((prev) => setAll(prev, ""));
+    setSpanVisible((prev) => setAll(prev, false));
+    setRandomNumber((prev) => setAll(prev, 0));
 
+    startTimer();
+  };
   const colors = ["bg-amber-500", "bg-pink-400", "bg-blue-500", "bg-green-200"];
   return (
-    <div className="justify-center items-center">
+    <div className="justify-center items-center bg-amber-700">
       <div
         className={`${
           isSubmitted
@@ -162,7 +190,10 @@ function App() {
               </span>
             </p>
             <p>
-              <button className="p-4 border-2 rounded-2xl bg-yellow-300">
+              <button
+                className="p-4 border-2 rounded-2xl bg-yellow-300"
+                onClick={() => newGame()}
+              >
                 New Game
               </button>
             </p>
@@ -189,10 +220,16 @@ function App() {
               </span>
             </p>
             <p className="flex gap-32">
-              <button className="p-4 border-2 rounded-2xl  bg-green-500 flex-1">
+              <button
+                className="p-4 border-2 rounded-2xl  bg-green-500 flex-1"
+                onClick={() => tryAgain()}
+              >
                 Try Again
               </button>
-              <button className="p-4 border-2 rounded-2xl bg-yellow-300 flex-1">
+              <button
+                className="p-4 border-2 rounded-2xl bg-yellow-300 flex-1"
+                onClick={() => newGame()}
+              >
                 New Game
               </button>
             </p>
@@ -201,7 +238,7 @@ function App() {
       </div>
       <div
         className={`${
-          start
+          !intro
             ? "z-50 absolute top-20 right-20 lg:right-50 border-2 min-h-1/2 w-2/3 text-center  p-4 bg-blue-400"
             : "hidden"
         }`}
@@ -232,7 +269,7 @@ function App() {
         <p>Best of Luck</p>
         <button
           onClick={() => {
-            startTimer();
+            closeIntro();
           }}
           className="border-2 p-2 bg-green-500"
         >
@@ -242,11 +279,14 @@ function App() {
 
       <div
         className={`${
-          start || isSubmitted
+          !start || isSubmitted
             ? "opacity-25 pointer-events-none "
             : "opacity-100 "
         }`}
       >
+        <div>
+          <span className="text-5xl font-extrabold text-green-500">NUMEMO</span>
+        </div>
         <div>
           <span className="font-extrabold text-4xl">Time: </span>
           <span>
