@@ -1,6 +1,19 @@
 import { useRef, useState } from "react";
 import Card from "./components/Card";
 import toast, { Toaster } from "react-hot-toast";
+// import * as Ri from "react-icons/ri";
+import {
+  RiNumber0,
+  RiNumber1,
+  RiNumber2,
+  RiNumber3,
+  RiNumber4,
+  RiNumber5,
+  RiNumber6,
+  RiNumber7,
+  RiNumber8,
+  RiNumber9,
+} from "react-icons/ri";
 function App() {
   const [numberClicked, setNumberClicked] = useState({
     1: false,
@@ -92,10 +105,10 @@ function App() {
   };
 
   const submitAnswer = () => {
-    pauseTimer();
-    setIsSubmitted(true);
-    setStart(false);
     if (allInput) {
+      pauseTimer();
+      setIsSubmitted(true);
+      setStart(false);
       // console.log(allInput);
       // console.log(inputNumber, randomNumber);
       const isSame = isEqual(inputNumber, randomNumber);
@@ -169,7 +182,7 @@ function App() {
   };
   const colors = ["bg-amber-500", "bg-pink-400", "bg-blue-500", "bg-green-200"];
   return (
-    <div className="justify-center items-center bg-amber-700">
+    <div className="justify-center items-center bg-amber-400 h-dvh">
       <div
         className={`${
           isSubmitted
@@ -286,6 +299,55 @@ function App() {
       >
         <div>
           <span className="text-5xl font-extrabold text-green-500">NUMEMO</span>
+          <RiNumber0 className="animate-bounce inline" />
+
+          <RiNumber1
+            className="animate-bounce inline delay-150 text-base"
+            style={{ animationDelay: "150ms" }}
+          />
+          <RiNumber2
+            className="animate-bounce inline delay-150 text-lg"
+            style={{ animationDelay: "250ms" }}
+          />
+          <RiNumber3
+            className="animate-bounce inline delay-150 text-xl"
+            style={{ animationDelay: "350ms" }}
+          />
+          <RiNumber4
+            className="animate-bounce inline delay-150 text-2xl"
+            style={{ animationDelay: "450ms" }}
+          />
+          <RiNumber5
+            className="animate-bounce inline delay-150 text-3xl"
+            style={{ animationDelay: "550ms" }}
+          />
+          <RiNumber6
+            className="animate-bounce inline delay-150 text-2xl"
+            style={{ animationDelay: "650ms" }}
+          />
+          <RiNumber7
+            className="animate-bounce inline delay-150 text-xl"
+            style={{ animationDelay: "750ms" }}
+          />
+          <RiNumber8
+            className="animate-bounce inline delay-150 text-lg"
+            style={{ animationDelay: "850ms" }}
+          />
+          <RiNumber9
+            className="animate-bounce inline delay-150 text-base"
+            style={{ animationDelay: "950ms" }}
+          />
+          {/* <span className="text-xs animate-bounce">0</span>
+          <span className="text-sm">1</span>
+          <span className="text-base">2</span>
+          <span className="text-lg">3</span>
+          <span className="text-xl">4</span>
+          <span className="text-2xl">5</span>
+          <span className="text-xl">6</span>
+          <span className="text-lg">7</span>
+          <span className="text-base">8</span>
+          <span className="text-sm">9</span>
+          <span className="text-xs">10</span> */}
         </div>
         <div>
           <span className="font-extrabold text-4xl">Time: </span>
